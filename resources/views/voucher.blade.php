@@ -48,75 +48,81 @@
                                 @endforeach
                             </ul>
                             <p class="text-center mb-0">Silahkan klik tombol paket diatas, pembayaran bisa melalui Dana, GoPay, ShoppePay dan Aplikasi QRIS lainnya secara otomatis.</p>
-                            <div class="other-login-signup my-3">
-                                <div class="or-login-signup text-center">
-                                    <strong>DAFTAR HARGA PAKET</strong>
-                                </div>
-                            </div>
-                            <div class="compare-pricing-table table-responsive-md">
-                                <table class="table table-bordered bg-soft">
-                                    <thead class="bg-soft">
-                                    <tr class="gray-light-bg">
-                                        <th class="bg-white color-primary border-bottom-0 h6 text-uppercase">PAKET</th>
-                                        <th class="bg-white color-accent border-bottom-0 h6 text-uppercase">HARGA</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="compare-content-body">
-                                    <tr>
-                                        <td>1 HARI</td>
-                                        <td>Rp. 2.000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3 HARI</td>
-                                        <td>Rp. 5.000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>7 HARI</td>
-                                        <td>Rp. 12.000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>15 HARI</td>
-                                        <td>Rp. 28.000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>30 HARI</td>
-                                        <td>Rp. 55.000</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="other-login-signup my-3">
-                                <div class="or-login-signup text-center">
-                                    <strong> INFORMASI PEMBAYARAN</strong>
-                                </div>
-                            </div>
-                            <div class="login-signup-form">
-                                <div class="form-group">
-                                    <label for="reference" class="pb-1">Nomor Referensi</label>
-                                    <div class="input-group input-group-merge">
-                                        <div class="input-icon">
-                                            <span class="ti-shopping-cart"></span>
-                                        </div>
-                                        <input type="text" id="reference" class="form-control" disabled>
+                            <div id="table-packet">
+                                <div class="other-login-signup my-3">
+                                    <div class="or-login-signup text-center">
+                                        <strong>DAFTAR HARGA PAKET</strong>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="amount" class="pb-1">Jumlah Pembayaran</label>
-                                    <div class="input-group input-group-merge">
-                                        <div class="input-icon">
-                                            <span class="ti-credit-card"></span>
-                                        </div>
-                                        <input type="text" id="amount" class="form-control" disabled>
+                                <div class="compare-pricing-table table-responsive-md">
+                                    <table class="table table-bordered bg-soft">
+                                        <thead class="bg-soft">
+                                        <tr class="gray-light-bg">
+                                            <th class="bg-white color-primary border-bottom-0 h6 text-uppercase">PAKET</th>
+                                            <th class="bg-white color-accent border-bottom-0 h6 text-uppercase">HARGA</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="compare-content-body">
+                                        <tr>
+                                            <td>1 HARI</td>
+                                            <td>Rp. 2.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3 HARI</td>
+                                            <td>Rp. 5.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>7 HARI</td>
+                                            <td>Rp. 12.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>15 HARI</td>
+                                            <td>Rp. 28.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>30 HARI</td>
+                                            <td>Rp. 55.000</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="payment-information">
+                                <div class="other-login-signup my-3">
+                                    <div class="or-login-signup text-center">
+                                        <strong> INFORMASI PEMBAYARAN</strong>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="pb-1">Batas Pembayaran</label>
-                                    <h4 class="font-weight-bold text-danger" id="expired_time"></h4>
+                                <div class="login-signup-form">
+                                    <div class="form-group">
+                                        <label for="reference" class="pb-1">Nomor Referensi</label>
+                                        <div class="input-group input-group-merge">
+                                            <div class="input-icon">
+                                                <span class="ti-shopping-cart"></span>
+                                            </div>
+                                            <input type="text" id="reference" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="amount" class="pb-1">Jumlah Pembayaran</label>
+                                        <div class="input-group input-group-merge">
+                                            <div class="input-icon">
+                                                <span class="ti-credit-card"></span>
+                                            </div>
+                                            <input type="text" id="amount" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="pb-1">Batas Pembayaran</label>
+                                        <h4 class="font-weight-bold text-danger" id="expired_time"></h4>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <img id="qrcode-payment" src="" alt="QRCode">
+                                        <label class="pb-1 font-italic">* Scan untuk pembayaran</label>
+                                    </div>
                                 </div>
-                                <div class="form-group text-center">
-                                    <img id="qrcode-payment" src="" alt="QRCode">
-                                    <label class="pb-1 font-italic">* Scan untuk pembayaran</label>
-                                </div>
+                            </div>
+                            <div id="payment-instruction">
                                 <div class="other-login-signup my-3">
                                     <div class="or-login-signup text-center">
                                         <strong>PEMBAYARAN VIA QRIS (DANA)</strong>
@@ -145,9 +151,38 @@
                                         - Transaksi selesai. Simpan bukti pembayaran Anda.<br/>
                                     </p>
                                 </div>
+                            </div>
+                            <div id="button-instruction">
                                 <div class="form-group text-center">
-                                    <button class="btn btn-primary" value="btn-back"><i class="fa fa-backward pr-1"></i> Kembali</button>
-                                    <button class="btn btn-info" value="info-payment"><i class="fa fa-info-circle pr-1"></i> PETUNJUK PEMBAYARAN</button>
+                                    <button class="btn btn-primary" id="btn-back"><i class="fa fa-backward pr-1"></i> Kembali</button>
+                                    <button class="btn btn-info" id="info-payment"><i class="fa fa-info-circle pr-1"></i> PETUNJUK PEMBAYARAN</button>
+                                </div>
+                            </div>
+                            <div id="voucher-information">
+                                <div class="other-login-signup my-3">
+                                    <div class="or-login-signup text-center">
+                                        <strong>LIHAT KODE VOUCHER</strong>
+                                    </div>
+                                </div>
+                                <div class="login-signup-form">
+                                    <div class="form-group">
+                                        <div class="input-group input-group-merge">
+                                            <div class="input-icon">
+                                                <span class="ti-shopping-cart"></span>
+                                            </div>
+                                            <input type="text" id="reference" class="form-control" placeholder="Masukkan Kode Pembayaran">
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-center" id="voucher-info">
+                                        <hp class="font-weight-bold text-primary" id="voucher_code">Kode Voucher Anda :</hp>
+                                        <h4 class="font-weight-bold text-danger" id="voucher_code">H1HBG7D</h4>
+                                        <p class="text-center mb-0">Berlaku sampai disemua jarian WIFI VOUCHER limitless Com</p>
+                                    </div>
+                                </div>
+                                <div class="form-group text-center">
+                                    <li class="list-inline-item my-1">
+                                        <button class="btn btn-info btn-voucher" value=""><i class="fa fa-eye pr-1"></i> Lihat Kode Voucher</button>
+                                    </li>
                                 </div>
 
                             </div>

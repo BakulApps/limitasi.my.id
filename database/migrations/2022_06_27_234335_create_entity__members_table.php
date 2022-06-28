@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('price');
             $table->string('product_url');
             $table->string('image_url');
+            $table->string('desc');
         });
 
         Schema::create('member_entity__invoices', function (Blueprint $table){
@@ -41,6 +42,8 @@ return new class extends Migration
             $table->string('invoice_reference')->nullable();
             $table->string('invoice_merchantref');
             $table->integer('invoice_amount');
+            $table->string('invoice_status')->nullable()->default('UNPAID');
+            $table->string('invoice_desc')->nullable();
         });
     }
 

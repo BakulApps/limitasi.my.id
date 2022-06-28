@@ -7,10 +7,24 @@ use App\Models\Member\Item;
 use App\Models\Member\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use RouterOS\Client;
+use RouterOS\Query;
 
 class MainController extends Controller
 {
     protected $data;
+
+    protected $route;
+
+    public function __construct()
+    {
+        $this->route = new Client([
+            'host' => env('MIKROTIK_HOST'),
+            'user' => env('MIKROTIK_USER'),
+            'pass' => env('MIKROTIK_PASS'),
+            'port' => (int) env('MIKROTIK_PORT')
+        ]);
+    }
 
     public function home()
     {
@@ -66,8 +80,9 @@ class MainController extends Controller
             'customer_email' => $data->customer->user_email,
             'customer_phone' => $data->customer->user_phone,
             'order_items' => $data->item,
-            'return_url' => 'https://limitasi.my.id/beli-voucher',
-            'expired_time' => (time() + (1 * 60 * 60)), // 1 jam
+            'callback_url' => 'http://103.172.204.69:2400/beli-voucher/callback',
+            'return_url' => 'http://103.172.204.69:2400/beli-voucher',
+            'expired_time' => (time() + (24 * 60 * 60)), // 1 jam
             'signature' => hash_hmac('sha256', env('TRIPAY_MERCHANTCODE') . $data->merchantRef . $data->amount, env('TRIPAY_PRIVATEKEY'))
         ];
 
@@ -123,7 +138,10 @@ class MainController extends Controller
                 return 'No invoice found for this unique ref: ' . $uniqueRef;
             }
 
-            $invoice->update(['status' => $status]);
+            $invoice->update(['invoice_status' => $status]);
+            if ($status == 'PAID'){
+                $invoice->update(['invoice_desc', ]);
+            }
             return response()->json(['success' => true]);
         }
 
@@ -161,5 +179,13 @@ class MainController extends Controller
             default:
                 return response()->json(['error' => 'Unrecognized payment status']);
         }
+    }
+
+    public function getVoucherCode($packet)
+    {
+        $query = (new Query('/ip/hotspot/user/print'));
+        $query->where('profile', $packet);
+        $response = $this->route->query($query)->read();
+        return $response[0]['name'];
     }
 }

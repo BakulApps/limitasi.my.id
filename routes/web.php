@@ -16,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 Route::match(['get', 'post'], '/', 'MainController@home')->name('home');
 Route::match(['get', 'post'], '/beli-voucher', 'MainController@voucher')->name('voucher');
 Route::match(['get', 'post'], '/beli-voucher/callback', 'MainController@CallBackPayment')->name('callback');
+Route::match(['get', 'post'], '/test', 'MainController@getVoucherCode');

@@ -1,6 +1,10 @@
 var voucherjs = function () {
     var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
 
+    $('#payment-information').hide()
+    $('#payment-instruction').hide()
+    $('#button-instruction').hide()
+    $('#voucher-info').hide()
     var _componentSubmit = function () {
         $(".btn-voucher").click(function (e) {
             e.preventDefault()
@@ -21,12 +25,23 @@ var voucherjs = function () {
                         $('#amount').val(resp.data.amount)
                         $('#expired_time').html(resp.data.expired_time)
                         $("#qrcode-payment").attr("src",resp.data.qr_url);
-                    }
-                    else {
-
+                        $('#table-packet').hide();
+                        $('#payment-information').show()
+                        $('#button-instruction').show()
                     }
                 }
             })
+        })
+
+        $('#info-payment').click(function (){
+            $('#table-packet').hide();
+            $('#payment-information').hide()
+            $('#payment-instruction').show()
+        })
+        $('#btn-back').click(function (){
+            $('#table-packet').hide();
+            $('#payment-information').show()
+            $('#payment-instruction').hide()
         })
     }
 

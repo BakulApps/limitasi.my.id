@@ -10,7 +10,7 @@ class Invoice extends Model
     use HasFactory;
 
     protected $table    = 'member_entity__invoices';
-    protected $fillable = ['invoice_id', 'invoice_user', 'invoice_item', 'invoice_reference', 'invoice_merchantref', 'invoice_amount'];
+    protected $fillable = ['invoice_id', 'invoice_user', 'invoice_item', 'invoice_reference', 'invoice_merchantref', 'invoice_amount', 'invoice_status', 'invoice_desc'];
     protected $primaryKey   = 'invoice_id';
     public $timestamps  = false;
 
