@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::match(['get', 'post'], '/', 'MainController@home')->name('home');
+Route::match(['get', 'post'], '/beli-voucher', 'MainController@voucher')->name('voucher');
+Route::match(['get', 'post'], '/beli-voucher/callback', 'MainController@CallBackPayment')->name('callback');
