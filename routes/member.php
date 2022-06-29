@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::match(['get', 'post'], '/', 'MainController@home')->name('home');
-Route::match(['get', 'post'], '/beli-voucher', 'MainController@voucher')->name('voucher');
-Route::match(['get', 'post'], '/beli-voucher/callback', 'MainController@CallBackPayment')->name('callback');
+Route::match(['get', 'post'], '/masuk', 'AuthController@login')->name('member.login');
+Route::match(['get', 'post'], '/daftar', 'AuthController@register')->name('member.register');
+Route::group(['middleware' => 'auth.member'], function (){
+    Route::match(['get', 'post'], '/', 'MainController@home')->name('member.home');
+    Route::match(['get', 'post'], '/keluar', 'AuthController@logout')->name('member.logout');
+});
+

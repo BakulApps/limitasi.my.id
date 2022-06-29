@@ -28,7 +28,7 @@ class MainController extends Controller
 
     public function home()
     {
-
+        return view('home');
     }
 
     public function voucher(Request $request)
@@ -55,57 +55,6 @@ class MainController extends Controller
             $this->data['items'] = Item::orderBy('id', 'ASC')->get();
             return view('voucher', $this->data);
         }
-    }
-
-    public function getData($item_id) : object
-    {
-        $item = Item::select('sku', 'name', 'price', 'product_url', 'image_url')->find($item_id);
-        $item->quantity = 1;
-        $data = (object) [
-            'merchantRef' => 'INV'. random_int(1000, 9999),
-            'amount' => $item->price,
-            'customer' => User::select('user_fullname','user_email', 'user_phone')->find(1),
-            'item' => [json_decode($item)]
-        ];
-        return $data;
-    }
-
-    public function RequestPayment($data)
-    {
-        $data = [
-            'method' => 'QRISD',
-            'merchant_ref' => $data->merchantRef,
-            'amount' => $data->amount,
-            'customer_name' => $data->customer->user_fullname,
-            'customer_email' => $data->customer->user_email,
-            'customer_phone' => $data->customer->user_phone,
-            'order_items' => $data->item,
-            'callback_url' => 'http://103.172.204.69:2400/beli-voucher/callback',
-            'return_url' => 'http://103.172.204.69:2400/beli-voucher',
-            'expired_time' => (time() + (24 * 60 * 60)), // 1 jam
-            'signature' => hash_hmac('sha256', env('TRIPAY_MERCHANTCODE') . $data->merchantRef . $data->amount, env('TRIPAY_PRIVATEKEY'))
-        ];
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_FRESH_CONNECT => true,
-            CURLOPT_URL => env('TRIPAY_URL') . '/transaction/create',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HEADER => false,
-            CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . env('TRIPAY_APIKEY')],
-            CURLOPT_FAILONERROR => false,
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => http_build_query($data),
-            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
-        ]);
-
-        $response = curl_exec($curl);
-        $error = curl_error($curl);
-
-        curl_close($curl);
-
-        return json_decode(empty($error) ? $response : $error);
     }
 
     public function CallBackPayment(Request $request)
@@ -140,7 +89,7 @@ class MainController extends Controller
 
             $invoice->update(['invoice_status' => $status]);
             if ($status == 'PAID'){
-                $invoice->update(['invoice_desc', ]);
+                $invoice->update(['invoice_desc', $this->getVoucherCode($invoice->item->desc)]);
             }
             return response()->json(['success' => true]);
         }
@@ -181,7 +130,58 @@ class MainController extends Controller
         }
     }
 
-    public function getVoucherCode($packet)
+    private function getData($item_id) : object
+    {
+        $item = Item::select('sku', 'name', 'price', 'product_url', 'image_url')->find($item_id);
+        $item->quantity = 1;
+        $data = (object) [
+            'merchantRef' => 'INV'. random_int(1000, 9999),
+            'amount' => $item->price,
+            'customer' => User::select('user_fullname','user_email', 'user_phone')->find(1),
+            'item' => [json_decode($item)]
+        ];
+        return $data;
+    }
+
+    private function RequestPayment($data)
+    {
+        $data = [
+            'method' => 'QRISD',
+            'merchant_ref' => $data->merchantRef,
+            'amount' => $data->amount,
+            'customer_name' => $data->customer->user_fullname,
+            'customer_email' => $data->customer->user_email,
+            'customer_phone' => $data->customer->user_phone,
+            'order_items' => $data->item,
+            'callback_url' => 'http://103.172.204.69:2400/beli-voucher/callback',
+            'return_url' => 'http://103.172.204.69:2400/beli-voucher',
+            'expired_time' => (time() + (24 * 60 * 60)), // 1 jam
+            'signature' => hash_hmac('sha256', env('TRIPAY_MERCHANTCODE') . $data->merchantRef . $data->amount, env('TRIPAY_PRIVATEKEY'))
+        ];
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_FRESH_CONNECT => true,
+            CURLOPT_URL => env('TRIPAY_URL') . '/transaction/create',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => false,
+            CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . env('TRIPAY_APIKEY')],
+            CURLOPT_FAILONERROR => false,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => http_build_query($data),
+            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+        ]);
+
+        $response = curl_exec($curl);
+        $error = curl_error($curl);
+
+        curl_close($curl);
+
+        return json_decode(empty($error) ? $response : $error);
+    }
+
+    private function getVoucherCode($packet)
     {
         $query = (new Query('/ip/hotspot/user/print'));
         $query->where('profile', $packet);
